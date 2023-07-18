@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h2>Dataset Information</h2>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Dataset Name</th>
+                    <td>Concrete Compressive Strength</td>
+                </tr>
+                <tr>
+                    <th>Dataset Type</th>
+                    <td>Regression</td>
+                </tr>
+                <tr>
+                    <th>Target</th>
+                    <td>Concrete compressive strength(MPa, megapascals) </td>
+                </tr>
+                <tr>
+                    <th>Dataset Size</th>
+                    <td>1030</td>
+                </tr>
+                <tr>
+                    <th>Dataset Split</th>
+                    <td>Test size: 0.2</td>
+                </tr>
+                <tr>
+                    <th>Dataset Source</th>
+                    <td>Prof. I-Cheng Yeh
+  Department of Information Management 
+  Chung-Hua University, 
+  Hsin Chu, Taiwan 30067, R.O.C.
+  e-mail:icyeh@chu.edu.tw
+  TEL:886-3-5186511</td>
+                </tr>                
+            </tbody>
+        </table>
+        
+        <h2>Model Results</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>R2 Score</th>
+                    <th>MSE</th>
+                    <th>Training Time (s)</th>
+                    <th>Testing Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>RandomForestRegressor</td>
+                    <td>0.8845496324580608</td>
+                    <td>29.749376329036725</td>
+                    <td>1.2047033309936523</td>
+                    <td>0.015951156616210938</td>
+                </tr>
+                
+                <tr>
+                    <td>PolynomialRegression</td>
+                    <td>0.8437171596477429</td>
+                    <td>40.27113235236021</td>
+                    <td>0.08623075485229492</td>
+                    <td>0.0010256767272949219</td>
+                </tr>
+                
+                <tr>
+                    <td>DecisionTreeRegressor</td>
+                    <td>0.8256250667078598</td>
+                    <td>44.93312254700354</td>
+                    <td>0.013137102127075195</td>
+                    <td>0.0009276866912841797</td>
+                </tr>
+                
+                <tr>
+                    <td>MLPRegressor</td>
+                    <td>0.7944142611507401</td>
+                    <td>52.97555688324636</td>
+                    <td>0.718529224395752</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>KNeighborsRegressor</td>
+                    <td>0.7367656460145194</td>
+                    <td>67.83051475864876</td>
+                    <td>0.0009992122650146484</td>
+                    <td>0.0009565353393554688</td>
+                </tr>
+                
+                <tr>
+                    <td>Lasso</td>
+                    <td>0.6275771642976492</td>
+                    <td>95.96632153476254</td>
+                    <td>0.002003192901611328</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>Ridge</td>
+                    <td>0.6275417727142361</td>
+                    <td>95.97544127648581</td>
+                    <td>0.0008919239044189453</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>LinearRegression</td>
+                    <td>0.6275416055429022</td>
+                    <td>95.97548435337701</td>
+                    <td>0.000997304916381836</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>SVR</td>
+                    <td>0.2320261036920902</td>
+                    <td>197.89234922826205</td>
+                    <td>0.04537248611450195</td>
+                    <td>0.028620243072509766</td>
+                </tr>
+                
+                <tr>
+                    <td>GaussianProcessRegressor</td>
+                    <td>-3.622950128649361</td>
+                    <td>1191.2468193537684</td>
+                    <td>0.10190939903259277</td>
+                    <td>0.015697240829467773</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
