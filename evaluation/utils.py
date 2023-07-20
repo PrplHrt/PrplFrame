@@ -91,7 +91,7 @@ def regression_parametric_study(
     base_data = dataset.mean().values
     results = {}
     for i, column in enumerate(dataset.columns):
-        var = np.arange(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)
+        var = np.linspace(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)
         data = [[*base_data[:i], x, *base_data[i+1:]] for x in var]
         pred = model.predict(data)
         results[column] = (var, pred)
