@@ -36,9 +36,20 @@ def main():
 
     data = utils.load_Xy(dataset, dataset_info['target'], dataset_info['split'])
 
+    # Using a temporary variable to hold the best performing model
+    # we'll define the best performing model by the highest r2
+    top_model = None
+    best_r2 = None
+
     scores=[]
     for model in models:
-        scores.append(utils.regression_train_and_test(model, *data))
+        score = utils.regression_train_and_test(model, *data)
+        # Check for best R2 score
+        if (not best_r2) or (score['r2'] > best_r2):
+            top_model = model
+            best_r2 = score['r2']
+        scores.append(score)
+
 
     scores.sort(key=lambda x: x['mse'])
 
