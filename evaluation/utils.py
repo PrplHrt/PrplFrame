@@ -69,3 +69,27 @@ def regression_train_and_test(model: sklearn.base.RegressorMixin, X_train: np.nd
         print(f'Testing for {type(model).__name__} completed in {scores["test_time"]} seconds')
     
     return scores
+
+def regression_parametric_study(
+        model: sklearn.base.RegressorMixin, 
+        dataset: pd.DataFrame, 
+        target: str | list[str] | None = None):
+    """
+    For this first version of the parametric study function the function will receive the dataset
+    and the trained model. The function will task the model with predicting the results for the target
+    variable for each predictor X with all other predictors kept at their mean value. As a result, for k
+    predictors in the dataset, there will be k sets of values/predictions of varying sizes. A dictionary
+    with the key being the name of the column and the values being the varied values and the results. There
+    will also be a dictionary with the name of the columns and their means.
+    """
+
+    if target:
+        dataset = dataset.drop(target, axis=1)
+    
+    column_stats = pd.DataFrame({'Mean': dataset.mean(), 'Max': dataset.max(), 'Min': dataset.min()})
+
+    base_data = dataset.mean().values
+    for i, column in enumerate(dataset.columns):
+        data = [[*base_data[:i], x, *base_data[i+1:]] for x in np.arange(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)]
+
+        break
