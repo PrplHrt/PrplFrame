@@ -89,7 +89,11 @@ def regression_parametric_study(
     column_stats = pd.DataFrame({'Mean': dataset.mean(), 'Max': dataset.max(), 'Min': dataset.min()})
 
     base_data = dataset.mean().values
+    results = {}
     for i, column in enumerate(dataset.columns):
-        data = [[*base_data[:i], x, *base_data[i+1:]] for x in np.arange(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)]
+        var = np.arange(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)
+        data = [[*base_data[:i], x, *base_data[i+1:]] for x in var]
+        pred = model.predict(data)
+        results[column] = (var, pred)
 
-        break
+    return column_stats, results
