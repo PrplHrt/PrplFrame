@@ -83,3 +83,4 @@ def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str, dire
 
         plt.savefig(os.path.join(save_dir, f"{column}.png"))
         plt.close()
+    print("Parametric plots saved in directory: " + save_dir)

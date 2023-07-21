@@ -20,7 +20,7 @@ models = [regression.GaussianProcessRegressor(),
           regression.KNeighborsRegressor(),
           regression.Ridge(),
           regression.LinearRegression(),
-        #   regression.MLPRegressor(),
+          regression.MLPRegressor(),
           regression.PolynomialRegression(),
           regression.SVR(),
           regression.DecisionTreeRegressor(),
@@ -50,9 +50,9 @@ def main():
             best_r2 = score['r2']
         scores.append(score)
 
-    # scores.sort(key=lambda x: x['mse'])
+    scores.sort(key=lambda x: x['mse'])
 
-    # render.render_results_html(dataset_info, scores, f"results/{dataset_info['name']}_results.html")
+    render.render_results_html(dataset_info, scores, f"results/{dataset_info['name']}_results.html")
     
     stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'])
 
