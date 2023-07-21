@@ -95,5 +95,4 @@ def regression_parametric_study(
         data = [[*base_data[:i], x, *base_data[i+1:]] for x in var]
         pred = model.predict(data)
         results[column] = (var, pred)
-
     return column_stats, results

@@ -56,5 +56,7 @@ def main():
     
     stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'])
 
+    render.plot_parametric_graphs(stats, results, dataset_info['target'])
+
 if __name__ == "__main__":
     main()
