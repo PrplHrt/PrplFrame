@@ -81,16 +81,38 @@ def plot_helper(x: np.ndarray, y: np.ndarray, column : str, target: str, stats: 
     plt.savefig(os.path.join(save_dir, f"{target}_{column}.png"))
     plt.close()
 
-def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | list[str], directory: str = ""):
+def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | list[str], directory: str = "", make_excel: bool = False):
     save_dir = os.path.join(directory, "parametric")
     os.makedirs(save_dir,exist_ok=True)
+    if make_excel:
+        sheets = []
     for column, vals in results.items():
         x, y = vals
 
         if type(target) == str:
             plot_helper(x, y, column, target, stats, save_dir)
+            if make_excel:
+                df = stats.transpose().drop(column, axis=1).drop(['Max', 'Min'])
+                df = pd.concat([df]*len(x), ignore_index=True)
+                df[column] = x
+                df[target] = y
+                sheets.append([column, df])
         else:
+            if make_excel:
+                df = stats.transpose().drop(column, axis=1).drop(['Max', 'Min'])
+                df = pd.concat([df]*len(x), ignore_index=True)
+                df[column] = x
             for i, targ in enumerate(target):
-                plot_helper(x, [val[i] for val in y], column, targ, stats, save_dir)
-
+                temp_y = [val[i] for val in y]
+                plot_helper(x, temp_y, column, targ, stats, save_dir)
+                if make_excel:
+                    df[targ] = temp_y
+            if make_excel:
+                sheets.append([column, df])
+    
     print("Parametric plots saved in directory: " + save_dir)
+    if make_excel:
+        with pd.ExcelWriter(os.path.join(save_dir, 'parametric_data.xlsx')) as writer:
+            for sheet in sheets:
+                sheet[1].to_excel(writer, sheet_name=sheet[0], index=False)
+        print("Parametric plots data saved in directory: ", os.path.join(save_dir, 'parametric_data.xlsx'))

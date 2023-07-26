@@ -57,7 +57,7 @@ def main():
     
     stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'])
 
-    render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results')
+    render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
 
 def two_target():
     # Test with 2 targets
@@ -87,7 +87,7 @@ def two_target():
     
     stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'])
 
-    render.plot_parametric_graphs(stats, results, dataset_info['target'], "results/twoTargets")
+    render.plot_parametric_graphs(stats, results, dataset_info['target'], "results/twoTargets", True)
 
 if __name__ == "__main__":
     main()
