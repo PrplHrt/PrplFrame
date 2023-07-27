@@ -1,3 +1,5 @@
+import itertools
+from typing import Iterable
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import sklearn
@@ -107,3 +109,34 @@ def regression_parametric_study(
         pred = model.predict(data)
         results[column] = (var, pred)
     return column_stats, results
+
+def custom_parametric(model: sklearn.base.RegressorMixin,
+                      dataset: pd.DataFrame,
+                      values: dict,
+                      target: str | list[str] | None = None):
+    """
+    Function designed to handle parametric studies where the values of the columns are to be defined
+    by the user.  The model and dataset to be used are passed into the function alongside a dictionary
+    that states the values to be used.
+
+    If a column is not featured in the values dictionary, its mean will be used.
+    If a column is featured in the values dictionary with a single value, that will be used as a base
+    value.
+    If a column is featured in the values dictionary with a list of values, those values will be used
+    for the study.
+    """
+    if target:
+        dataset = dataset.drop(target, axis=1)
+
+
+    for column in dataset.columns:
+        if column not in values.keys():
+            values[column] = dataset[column].mean()
+        if not isinstance(values[column], Iterable):
+            values[column] = [values[column]]
+
+    all_combinations = list(itertools.product(*values.values()))
+
+    results = model.predict(all_combinations)
+    
+    return results, all_combinations

@@ -1,8 +1,10 @@
+from typing import Iterable
 import pandas as pd
 
 from evaluation import utils
 from models import regression
 from output import render
+import os
 
 dataset_info = {'name': 'Concrete Compressive Strength',
                 'type': 'Regression',
@@ -51,13 +53,18 @@ def main():
             best_r2 = score['r2']
         scores.append(score)
 
-    scores.sort(key=lambda x: x['mse'])
+    # scores.sort(key=lambda x: x['mse'])
 
-    render.render_results_html(dataset_info, scores)
+    # render.render_results_html(dataset_info, scores)
     
-    stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'], c2=range(0,200))
+    # stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'], c2=range(0,200))
 
-    render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
+    # render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
+    os.makedirs(os.path.join('results', "custom_parametric"), exist_ok=True)
+    results, values = utils.custom_parametric(top_model, dataset,{dataset.columns[1]: range(0, 10), dataset.columns[2]: range(9, 12)}, dataset_info['target'])
+    df = pd.DataFrame(values, columns=dataset.drop(dataset_info['target'], axis=1).columns)
+    df[dataset_info['target']] = results
+    df.to_csv(os.path.join('results', "custom_parametric", 'custom_parametric_data.csv'))
 
 def two_target():
     # Test with 2 targets
@@ -91,4 +98,4 @@ def two_target():
 
 if __name__ == "__main__":
     main()
-    two_target()
+    # two_target()
