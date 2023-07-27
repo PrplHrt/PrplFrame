@@ -55,7 +55,7 @@ def main():
 
     render.render_results_html(dataset_info, scores)
     
-    stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'])
+    stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'], c2=range(0,200))
 
     render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
 

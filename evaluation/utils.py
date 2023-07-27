@@ -73,14 +73,20 @@ def regression_train_and_test(model: sklearn.base.RegressorMixin, X_train: np.nd
 def regression_parametric_study(
         model: sklearn.base.RegressorMixin, 
         dataset: pd.DataFrame, 
-        target: str | list[str] | None = None):
+        target: str | list[str] | None = None,
+        num_vals: int = 100,
+        **kwargs):
     """
-    For this first version of the parametric study function the function will receive the dataset
+    For this version of the parametric study function the function will receive the dataset
     and the trained model. The function will task the model with predicting the results for the target
     variable for each predictor X with all other predictors kept at their mean value. As a result, for k
     predictors in the dataset, there will be k sets of values/predictions of varying sizes. A dictionary
     with the key being the name of the column and the values being the varied values and the results. There
     will also be a dictionary with the name of the columns and their means.
+
+    Users can enter key word arguments to specify the range of the values for any number of columns. The argument
+    should match the name of the column. For the sake of columns with names that can't be used as keyword arguments,
+    users can use ci where i is the index of the column (0 indexing). The values must be entered in list format. 
     """
 
     if target:
@@ -91,7 +97,12 @@ def regression_parametric_study(
     base_data = dataset.mean().values
     results = {}
     for i, column in enumerate(dataset.columns):
-        var = np.linspace(column_stats['Min'].loc[column], column_stats['Max'].loc[column], 100)
+        if column in kwargs.keys():
+            var = kwargs[column]
+        elif f"c{i}" in kwargs.keys():
+            var = kwargs[f"c{i}"]
+        else:
+            var = np.linspace(column_stats['Min'].loc[column], column_stats['Max'].loc[column], num_vals)
         data = [[*base_data[:i], x, *base_data[i+1:]] for x in var]
         pred = model.predict(data)
         results[column] = (var, pred)

@@ -82,6 +82,10 @@ def plot_helper(x: np.ndarray, y: np.ndarray, column : str, target: str, stats: 
     plt.close()
 
 def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | list[str], directory: str = "", make_excel: bool = False):
+    """
+    This function uses the statistics and results collected from the parametric study function to create apropriate plots
+    and, when opted for, output the results into an excel file.
+    """
     save_dir = os.path.join(directory, "parametric")
     os.makedirs(save_dir,exist_ok=True)
     if make_excel:
