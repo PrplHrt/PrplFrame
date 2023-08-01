@@ -127,5 +127,5 @@ def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | lis
     if make_excel:
         with pd.ExcelWriter(os.path.join(save_dir, 'parametric_data.xlsx')) as writer:
             for sheet in sheets:
-                sheet[1].to_excel(writer, sheet_name=sheet[0], index=False)
+                sheet[1].to_excel(writer, sheet_name=remove_invalid_filename(sheet[0]), index=False)
         print("Parametric plots data saved in directory: ", os.path.join(save_dir, 'parametric_data.xlsx'))
