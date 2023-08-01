@@ -5,6 +5,13 @@ import matplotlib.pyplot as plt
 import textwrap
 import numpy as np
 
+def remove_invalid_filename(filename: str, replacement: str = '_'):
+    invalid = '<>:"/\|?* '
+
+    for char in invalid:
+        filename = filename.replace(char, replacement)
+    return filename
+
 def render_results_html(dataset_info: dict, scores: list[dict], directory: str = None):
     """
     Function that uses jinja and a saved template to create an HTML page with all the results of this experiment.
@@ -42,10 +49,10 @@ def render_results_html(dataset_info: dict, scores: list[dict], directory: str =
 
     if directory:
         os.makedirs(directory, exist_ok=True)
-        results_filename = os.path.join(directory, f'{dataset_info["name"]}_results.html')
+        results_filename = os.path.join(directory, f'{remove_invalid_filename(dataset_info["name"])}_results.html')
     else:
         os.makedirs('results', exist_ok=True)
-        results_filename = f'results/{dataset_info["name"]}_results.html'
+        results_filename = f'results/{remove_invalid_filename(dataset_info["name"])}_results.html'
     
     with open(results_filename, mode="w", encoding="utf-8") as results:
         results.write(results_template.render(context))
@@ -78,7 +85,9 @@ def plot_helper(x: np.ndarray, y: np.ndarray, column : str, target: str, stats: 
     # Adjust spacing between subplots to avoid overlapping
     plt.tight_layout()
 
-    plt.savefig(os.path.join(save_dir, f"{target}_{column}.png"))
+
+    
+    plt.savefig(os.path.join(save_dir, f"{remove_invalid_filename(target)}_{remove_invalid_filename(column)}.png"))
     plt.close()
 
 def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | list[str], directory: str = "", make_excel: bool = False):
