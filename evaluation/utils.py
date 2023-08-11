@@ -115,8 +115,8 @@ def classification_train_and_test(model: sklearn.base.ClassifierMixin,
     
     return scores
 
-def regression_parametric_study(
-        model: sklearn.base.RegressorMixin, 
+def parametric_study(
+        model: sklearn.base.RegressorMixin | sklearn.base.ClassifierMixin, 
         dataset: pd.DataFrame, 
         target: str | list[str] | None = None,
         num_vals: int = 100,
@@ -153,7 +153,7 @@ def regression_parametric_study(
         results[column] = (var, pred)
     return column_stats, results
 
-def custom_parametric(model: sklearn.base.RegressorMixin,
+def custom_parametric(model: sklearn.base.RegressorMixin | sklearn.base.ClassifierMixin,
                       dataset: pd.DataFrame,
                       values: dict,
                       target: str | list[str] | None = None):
