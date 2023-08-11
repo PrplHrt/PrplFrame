@@ -72,6 +72,49 @@ def regression_train_and_test(model: sklearn.base.RegressorMixin, X_train: np.nd
     
     return scores
 
+class_metrics = [
+    metrics.f1(),
+    metrics.accuracy(),
+]
+
+def classification_train_and_test(model: sklearn.base.ClassifierMixin,
+                                  X_train: np.ndarray, 
+                                  X_test: np.ndarray, 
+                                  y_train: np.ndarray, 
+                                  y_test: np.ndarray, 
+                                  progress: bool = False):
+    """
+    This function takes in a classification model with base class sklearn.base.ClassifierMixin and the train and test data
+    of a dataset. This function then trains and tests the model given and returns the results.
+    """
+    assert sklearn.base.is_classifier(model) == True, "Model should be a classifier"
+    scores = {}
+
+    # Training the model
+    if progress:
+        print(f'Beginning training for {type(model).__name__}')
+    st = time.time()
+    model.fit(X_train, y_train)
+    scores['train_time'] = time.time() - st
+    if progress:
+        print(f'Training for {type(model).__name__} completed in {scores["train_time"]} seconds')
+
+
+    # Testing the model and reporting MSE and R2
+    if progress:
+        print(f'Beginning testing for {type(model).__name__}')
+    st = time.time()
+    y_pred = model.predict(X_test)
+    scores['test_time'] = time.time() - st
+    scores['name'] = type(model).__name__
+    for metric in class_metrics:
+        scores[type(metric).__name__] = metric.score(y_test, y_pred)
+
+    if progress:
+        print(f'Testing for {type(model).__name__} completed in {scores["test_time"]} seconds')
+    
+    return scores
+
 def regression_parametric_study(
         model: sklearn.base.RegressorMixin, 
         dataset: pd.DataFrame, 
