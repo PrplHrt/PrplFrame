@@ -57,17 +57,15 @@ def main():
     scores.sort(key=lambda x: x['mse'])
 
     render.render_results_html(dataset_info, scores)
-    
-    # stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'], c2=range(0,200))
 
-    # render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
     stats, results = utils.regression_parametric_study(top_model, dataset, dataset_info['target'], c1=[0.1, 0.2, 0.3, 0.4, 0.5], c2=[6, 9, 12, 15, 18, 21, 24, 27, 30, 33])
     render.plot_parametric_graphs(stats, results, dataset_info['target'], 'results', True)
-    # os.makedirs(os.path.join('results', "custom_parametric"), exist_ok=True)
-    # results, values = utils.custom_parametric(top_model, dataset,{dataset.columns[1]: range(0, 10), dataset.columns[2]: range(9, 12)}, dataset_info['target'])
-    # df = pd.DataFrame(values, columns=dataset.drop(dataset_info['target'], axis=1).columns)
-    # df[dataset_info['target']] = results
-    # df.to_csv(os.path.join('results', "custom_parametric", 'custom_parametric_data.csv'))
+
+    os.makedirs(os.path.join('results', "custom_parametric"), exist_ok=True)
+    results, values = utils.custom_parametric(top_model, dataset,{dataset.columns[1]: range(0, 10), dataset.columns[2]: range(9, 12)}, dataset_info['target'])
+    df = pd.DataFrame(values, columns=dataset.drop(dataset_info['target'], axis=1).columns)
+    df[dataset_info['target']] = results
+    df.to_csv(os.path.join('results', "custom_parametric", 'custom_parametric_data.csv'))
 
 def two_target():
     # Test with 2 targets

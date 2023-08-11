@@ -86,8 +86,8 @@ def plot_helper(x: np.ndarray, y: np.ndarray, column : str, target: str, stats: 
     plt.tight_layout()
 
 
-    
-    plt.savefig(os.path.join(save_dir, f"{remove_invalid_filename(target)}_{remove_invalid_filename(column)}.png"))
+    fname = remove_invalid_filename(target)+'_'+remove_invalid_filename(column)+".png"
+    plt.savefig(os.path.join(save_dir, fname))
     plt.close()
 
 def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | list[str], directory: str = "", make_excel: bool = False):
@@ -127,5 +127,5 @@ def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | lis
     if make_excel:
         with pd.ExcelWriter(os.path.join(save_dir, 'parametric_data.xlsx')) as writer:
             for sheet in sheets:
-                sheet[1].to_excel(writer, sheet_name=remove_invalid_filename(sheet[0]), index=False)
+                sheet[1].to_excel(writer, sheet_name=remove_invalid_filename(sheet[0]), igndex=False)
         print("Parametric plots data saved in directory: ", os.path.join(save_dir, 'parametric_data.xlsx'))
