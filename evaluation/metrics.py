@@ -23,8 +23,8 @@ class f1():
     def __init__(self):
         pass
 
-    def score(self, true, pred, *args, **kwargs):
-        return sklearn.metrics.f1_score(true, pred, *args, **kwargs)
+    def score(self, true, pred, average='micro', *args, **kwargs):
+        return sklearn.metrics.f1_score(true, pred, average=average, *args, **kwargs)
     
         
 class accuracy():
