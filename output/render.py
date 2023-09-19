@@ -12,6 +12,19 @@ def remove_invalid_filename(filename: str, replacement: str = '_'):
         filename = filename.replace(char, replacement)
     return filename
 
+class InvalidType(Exception):
+    """Exception raised for errors in dataset type.
+
+    Attributes:
+        data_type -- input type which caused the error
+        message -- explanation of the error
+    """
+
+    def __init__(self, data_type):
+        self.data_type = data_type
+        self.message = f"{data_type} is not a supported dataset type."
+        super().__init__(self.message)
+
 def render_results_html(dataset_info: dict, scores: list[dict], directory: str = None):
     """
     Function that uses jinja and a saved template to create an HTML page with all the results of this experiment.
@@ -40,7 +53,12 @@ def render_results_html(dataset_info: dict, scores: list[dict], directory: str =
     
     """
     environment = Environment(loader=FileSystemLoader("output/templates/"))
-    results_template = environment.get_template("regression_results.html")
+    if dataset_info['type'].lower() == "regression":
+        results_template = environment.get_template("regression_results.html")
+    elif dataset_info['type'].lower() == "classification":
+        results_template = environment.get_template("classification_results.html")
+    else:
+        raise InvalidType(dataset_info["type"])
 
     context = {
         'dataset_info': dataset_info,
@@ -59,6 +77,7 @@ def render_results_html(dataset_info: dict, scores: list[dict], directory: str =
         print(f"Results page for {dataset_info['name']} saved in {results_filename}...")
     
     return results_filename
+
 
 def plot_helper(x: np.ndarray, y: np.ndarray, column : str, target: str, stats: pd.DataFrame, save_dir: str):
     # Create a wider figure to accommodate the graph and text box side by side
@@ -127,5 +146,5 @@ def plot_parametric_graphs(stats: pd.DataFrame, results: dict, target: str | lis
     if make_excel:
         with pd.ExcelWriter(os.path.join(save_dir, 'parametric_data.xlsx')) as writer:
             for sheet in sheets:
-                sheet[1].to_excel(writer, sheet_name=remove_invalid_filename(sheet[0]), igndex=False)
+                sheet[1].to_excel(writer, sheet_name=remove_invalid_filename(sheet[0]))
         print("Parametric plots data saved in directory: ", os.path.join(save_dir, 'parametric_data.xlsx'))

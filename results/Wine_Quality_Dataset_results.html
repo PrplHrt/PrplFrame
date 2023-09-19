@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h2>Dataset Information</h2>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Dataset Name</th>
+                    <td>Wine Quality Dataset</td>
+                </tr>
+                <tr>
+                    <th>Dataset Type</th>
+                    <td>Classification</td>
+                </tr>
+                <tr>
+                    <th>Target</th>
+                    <td>quality</td>
+                </tr>
+                <tr>
+                    <th>Dataset Size</th>
+                    <td>1143</td>
+                </tr>
+                <tr>
+                    <th>Dataset Split</th>
+                    <td>Test size: 0.2</td>
+                </tr>
+                <tr>
+                    <th>Dataset Source</th>
+                    <td>https://www.kaggle.com/datasets/yasserh/wine-quality-dataset</td>
+                </tr>                
+            </tbody>
+        </table>
+        
+        <h2>Model Results</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>F1 Score</th>
+                    <th>Accuracy</th>
+                    <th>Training Time (s)</th>
+                    <th>Testing Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>RandomForestClassifier</td>
+                    <td>0.6768558951965066</td>
+                    <td>0.6768558951965066</td>
+                    <td>0.49693822860717773</td>
+                    <td>0.012707710266113281</td>
+                </tr>
+                
+                <tr>
+                    <td>MLPClassifier</td>
+                    <td>0.6506550218340611</td>
+                    <td>0.6506550218340611</td>
+                    <td>0.5558702945709229</td>
+                    <td>0.009233236312866211</td>
+                </tr>
+                
+                <tr>
+                    <td>LogisticRegression</td>
+                    <td>0.6200873362445415</td>
+                    <td>0.6200873362445415</td>
+                    <td>0.046822309494018555</td>
+                    <td>0.0009682178497314453</td>
+                </tr>
+                
+                <tr>
+                    <td>GaussianProcessClassifier</td>
+                    <td>0.611353711790393</td>
+                    <td>0.611353711790393</td>
+                    <td>3.3482298851013184</td>
+                    <td>0.32541346549987793</td>
+                </tr>
+                
+                <tr>
+                    <td>DecisionTreeClassifier</td>
+                    <td>0.5720524017467249</td>
+                    <td>0.5720524017467249</td>
+                    <td>0.01606011390686035</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>SVC</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.050757646560668945</td>
+                    <td>0.022039175033569336</td>
+                </tr>
+                
+                <tr>
+                    <td>DecisionTreeClassifier</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.016443252563476562</td>
+                    <td>0.0009839534759521484</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
