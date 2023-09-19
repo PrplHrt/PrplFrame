@@ -3,6 +3,11 @@ import PyQt6
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QFileDialog, QTableWidget, 
                              QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, 
                              QLabel, QLineEdit, QPushButton)
+from evaluation import utils
+from models import regression
+from output import render
+from models import classification
+import os
 
 import pandas as pd
 
@@ -68,8 +73,8 @@ class MainWindow(QMainWindow):
             # Get the user input
             self.dataset_info["name"] = self.datasetNameLineEdit.text()
             self.dataset_info["type"] = self.datasetTypeLineEdit.text()
-            self.dataset_info["target"] = self.targetColumnLineEdit.text()
-            self.dataset_info["split"] = self.testSplitLineEdit.text()
+            self.dataset_info["target"] = self.targetColumnLineEdit.text().split(',') if ',' in self.targetColumnLineEdit.text() else [self.targetColumnLineEdit.text()]
+            self.dataset_info["split"] = float(self.testSplitLineEdit.text())
             self.dataset_info["source"] = self.datasetSourceLineEdit.text()
             # Close the dialog
             self.close()
@@ -97,6 +102,7 @@ class MainWindow(QMainWindow):
 
         # Create a Train and Test menu action
         self.testMenu = self.menuBar.addAction("Train and Test")
+        self.testMenu.triggered.connect(self.trainAndTest)
         # Disabled until a dataset is loaded in
         self.testMenu.setEnabled(False)
 
@@ -136,6 +142,65 @@ class MainWindow(QMainWindow):
     def getDatasetInfo(self):
         dialog = MainWindow.DatasetInfoDialog(self.dataset_info)
         dialog.exec()
+    
+    def trainAndTest(self):
+        print("Entering train and test")
+        # Loading in the train and test set
+        data = utils.load_Xy(self.df, self.dataset_info['target'], self.dataset_info['split'])
+
+        # Using a temporary variable to hold the best performing model
+        # we'll define the best performing model by the highest f1 score
+        self.top_model = None
+        metric = None
+        self.scores=[]
+
+        if self.dataset_info['type'].lower() == 'classification':
+            # Define which models to use
+            models = [  classification.LogisticRegression(),
+                        classification.SVC(),
+                        classification.DecisionTreeClassifier(),
+                        classification.GaussianProcessClassifier(),
+                        classification.RandomForestClassifier(),
+                        classification.DecisionTreeClassifier(),
+                        classification.MLPClassifier()
+                    ]
+            for model in models:
+                score = utils.classification_train_and_test(model, *data)
+                # Check for best f1 score
+                if (not metric) or (score['f1'] > metric):
+                    self.top_model = model
+                    metric = score['f1']
+                self.scores.append(score)
+        elif self.dataset_info['type'].lower() == 'regression':
+            models = [  regression.GaussianProcessRegressor(),
+                        regression.KNeighborsRegressor(),
+                        regression.Ridge(),
+                        regression.LinearRegression(),
+                        regression.MLPRegressor(),
+                        regression.PolynomialRegression(),
+                        regression.SVR(),
+                        regression.DecisionTreeRegressor(),
+                        regression.Lasso(),
+                        regression.RandomForestRegressor()
+                    ]
+            for model in models:
+                score = utils.regression_train_and_test(model, *data)
+                # Check for best R2 score
+                if (not metric) or (score['r2'] > metric):
+                    self.top_model = model
+                    metric = score['r2']
+                self.scores.append(score)
+        else:
+            msgBox = QMessageBox()
+            msgBox.setText(f"The dataset type '{self.dataset_info['type']}' is not supported. Use either 'classification' or 'regression'.")
+            msgBox.exec()
+            return
+        
+        msgBox = QMessageBox()
+        msgBox.setText(f"Best performing model:  {type(self.top_model).__name__} w/ score: {metric}")
+        msgBox.exec()
+
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
