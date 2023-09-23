@@ -106,6 +106,12 @@ class MainWindow(QMainWindow):
         # Disabled until a dataset is loaded in
         self.testMenu.setEnabled(False)
 
+        # Create a parametric study menu action
+        self.paraMenu = self.menuBar.addAction("Parametric")
+        self.paraMenu.triggered.connect(self.parametric)
+        # Disabled until train and test is done
+        self.paraMenu.setEnabled(False)
+
         # Create dictionary that will store dataset info
         self.dataset_info = {}
 
@@ -114,6 +120,7 @@ class MainWindow(QMainWindow):
 
     def openFile(self):
         self.testMenu.setEnabled(False)
+        self.paraMenu.setEnabled(False)
         # Get the path of the selected file
         filePath, _ = QFileDialog.getOpenFileName(self, "Select CSV file", filter="CSV files (*.csv)")
 
@@ -144,7 +151,6 @@ class MainWindow(QMainWindow):
         dialog.exec()
     
     def trainAndTest(self):
-        print("Entering train and test")
         # Loading in the train and test set
         data = utils.load_Xy(self.df, self.dataset_info['target'], self.dataset_info['split'])
 
@@ -199,6 +205,10 @@ class MainWindow(QMainWindow):
         msgBox = QMessageBox()
         msgBox.setText(f"Best performing model:  {type(self.top_model).__name__} w/ score: {metric}")
         msgBox.exec()
+        self.paraMenu.setEnabled(True)
+
+    def parametric(self):
+        print("Parametric")
 
         
 
