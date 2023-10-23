@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <h2>Dataset Information</h2>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Dataset Name</th>
+                    <td>wine</td>
+                </tr>
+                <tr>
+                    <th>Dataset Type</th>
+                    <td>classification</td>
+                </tr>
+                <tr>
+                    <th>Target</th>
+                    <td>['quality']</td>
+                </tr>
+                <tr>
+                    <th>Dataset Size</th>
+                    <td>1143</td>
+                </tr>
+                <tr>
+                    <th>Dataset Split</th>
+                    <td>Test size: 0.2</td>
+                </tr>
+                <tr>
+                    <th>Dataset Source</th>
+                    <td>kaggle</td>
+                </tr>                
+            </tbody>
+        </table>
+        
+        <h2>Model Results</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>F1 Score</th>
+                    <th>Accuracy</th>
+                    <th>Training Time (s)</th>
+                    <th>Testing Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>RandomForestClassifier</td>
+                    <td>0.6724890829694323</td>
+                    <td>0.6724890829694323</td>
+                    <td>1.074542760848999</td>
+                    <td>0.011565685272216797</td>
+                </tr>
+                
+                <tr>
+                    <td>DecisionTreeClassifier</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.5633187772925764</td>
+                    <td>0.019654035568237305</td>
+                    <td>0.001001119613647461</td>
+                </tr>
+                
+                <tr>
+                    <td>DecisionTreeClassifier</td>
+                    <td>0.5545851528384279</td>
+                    <td>0.5545851528384279</td>
+                    <td>0.04694199562072754</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>LogisticRegression</td>
+                    <td>0.537117903930131</td>
+                    <td>0.537117903930131</td>
+                    <td>0.04397845268249512</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>SVC</td>
+                    <td>0.49344978165938863</td>
+                    <td>0.49344978165938863</td>
+                    <td>0.03925633430480957</td>
+                    <td>0.030246973037719727</td>
+                </tr>
+                
+                <tr>
+                    <td>MLPClassifier</td>
+                    <td>0.43231441048034935</td>
+                    <td>0.43231441048034935</td>
+                    <td>0.23774433135986328</td>
+                    <td>0.0</td>
+                </tr>
+                
+                <tr>
+                    <td>GaussianProcessClassifier</td>
+                    <td>0.38427947598253276</td>
+                    <td>0.38427947598253276</td>
+                    <td>2.664393663406372</td>
+                    <td>0.6764061450958252</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
