@@ -9,7 +9,7 @@ from output import render
 from models import classification
 import os
 
-import pandas as pdpy
+import pandas as pd
 
 basedir = os.path.dirname(__file__)
 
