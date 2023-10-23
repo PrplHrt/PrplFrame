@@ -9,7 +9,9 @@ from output import render
 from models import classification
 import os
 
-import pandas as pd
+import pandas as pdpy
+
+basedir = os.path.dirname(__file__)
 
 class MainWindow(QMainWindow):
     class DatasetInfoDialog(QDialog):
@@ -242,35 +244,35 @@ class MainWindow(QMainWindow):
         
         self.paraMenu.setEnabled(True)
 
-def parametric(self):
-    """
-    Run a parametric study on the dataset.
-    
-    This function performs a parametric study on the dataset by calling the `utils.parametric_study` function
-    and plots the results using the `render.plot_parametric_graphs` function.
-    
-    Returns:
-        None
-    """
-    # Define the directory to save the results
-    directory = f'results/{self.dataset_info["name"]}_auto_parametric'
-    
-    # Perform the parametric study
-    stats, results = utils.parametric_study(self.top_model, self.df, self.dataset_info['target'])
-    
-    # Plot the parametric graphs and save them to the specified directory
-    render.plot_parametric_graphs(
-        stats, 
-        results, 
-        self.dataset_info['target'] if len(self.dataset_info['target']) > 1 else self.dataset_info['target'][0], 
-        directory, 
-        make_excel=True
-    )
+    def parametric(self):
+        """
+        Run a parametric study on the dataset.
+        
+        This function performs a parametric study on the dataset by calling the `utils.parametric_study` function
+        and plots the results using the `render.plot_parametric_graphs` function.
+        
+        Returns:
+            None
+        """
+        # Define the directory to save the results
+        directory = f'results/{self.dataset_info["name"]}_auto_parametric'
+        
+        # Perform the parametric study
+        stats, results = utils.parametric_study(self.top_model, self.df, self.dataset_info['target'])
+        
+        # Plot the parametric graphs and save them to the specified directory
+        render.plot_parametric_graphs(
+            stats, 
+            results, 
+            self.dataset_info['target'] if len(self.dataset_info['target']) > 1 else self.dataset_info['target'][0], 
+            directory, 
+            make_excel=True
+        )
 
-    # Show a message box with the completion message
-    msgBox = QMessageBox()
-    msgBox.setText(f"Parametric study complete with results saved in {directory}")
-    msgBox.exec() 
+        # Show a message box with the completion message
+        msgBox = QMessageBox()
+        msgBox.setText(f"Parametric study complete with results saved in {directory}")
+        msgBox.exec() 
 
         
 
