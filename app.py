@@ -119,6 +119,17 @@ class MainWindow(QMainWindow):
         self.show()
 
     def openFile(self):
+        """
+        Opens a file dialog for the user to select a CSV file.
+        Reads the selected file using pandas and displays the head of the DataFrame in a QTableWidget.
+        Collects dataset information and enables the testMenu.
+
+        Parameters:
+            self (object): The instance of the class.
+        
+        Returns:
+            None
+        """
         self.testMenu.setEnabled(False)
         self.paraMenu.setEnabled(False)
         # Get the path of the selected file
@@ -139,18 +150,33 @@ class MainWindow(QMainWindow):
             self.table.show()
 
             # Pop-up for collecting dataset info
-            self.getDatasetInfo()
+            self.get_dataset_info()
 
             self.dataset_info['path'] = filePath
             self.dataset_info['size'] = len(self.df)
 
             self.testMenu.setEnabled(True)
 
-    def getDatasetInfo(self):
+    def get_dataset_info(self):
+        """
+        Open a dialog to display dataset information.
+        """
+        # Create an instance of the DatasetInfoDialog class
         dialog = MainWindow.DatasetInfoDialog(self.dataset_info)
+
+        # Execute the dialog
         dialog.exec()
-    
+
     def trainAndTest(self):
+        """
+        Trains and tests the model on the given dataset.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
         # Loading in the train and test set
         data = utils.load_Xy(self.df, self.dataset_info['target'], self.dataset_info['split'])
 
@@ -202,13 +228,49 @@ class MainWindow(QMainWindow):
             msgBox.exec()
             return
         
+        # Sorting the results so that they print out in order of performance
+        if self.dataset_info['type'].lower() == 'classification':
+            self.scores.sort(key=lambda x: x['f1'], reverse=True)
+        else:
+            self.scores.sort(key=lambda x: x['mse'])
+        # Printed out the results
+        render.render_results_html(self.dataset_info, self.scores)
+        
         msgBox = QMessageBox()
-        msgBox.setText(f"Best performing model:  {type(self.top_model).__name__} w/ score: {metric}")
+        msgBox.setText(f"Best performing model:  {type(self.top_model).__name__} w/ score: {metric}, results stored in results/")
         msgBox.exec()
+        
         self.paraMenu.setEnabled(True)
 
-    def parametric(self):
-        print("Parametric")
+def parametric(self):
+    """
+    Run a parametric study on the dataset.
+    
+    This function performs a parametric study on the dataset by calling the `utils.parametric_study` function
+    and plots the results using the `render.plot_parametric_graphs` function.
+    
+    Returns:
+        None
+    """
+    # Define the directory to save the results
+    directory = f'results/{self.dataset_info["name"]}_auto_parametric'
+    
+    # Perform the parametric study
+    stats, results = utils.parametric_study(self.top_model, self.df, self.dataset_info['target'])
+    
+    # Plot the parametric graphs and save them to the specified directory
+    render.plot_parametric_graphs(
+        stats, 
+        results, 
+        self.dataset_info['target'] if len(self.dataset_info['target']) > 1 else self.dataset_info['target'][0], 
+        directory, 
+        make_excel=True
+    )
+
+    # Show a message box with the completion message
+    msgBox = QMessageBox()
+    msgBox.setText(f"Parametric study complete with results saved in {directory}")
+    msgBox.exec() 
 
         
 
